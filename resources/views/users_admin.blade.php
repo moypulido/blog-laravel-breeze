@@ -20,18 +20,32 @@
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
-                        <tr class="border-t">
+                        <tr class="border-t justify">
                             <td class="px-4 py-2">{{ $user->id }}</td>
                             <td class="px-4 py-2">{{ $user->name }}</td>
                             <td class="px-4 py-2">{{ $user->email }}</td>
-                            <td class="px-4 py-2">{{ $user->role->name }}</td>
+                            <td class="px-4 py-2">
+                                <form action="{{ route('user.updateRole', ['user' => $user->id]) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <select name="role_id" class="border rounded p-1 w-full">
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>
+                                                {{ $role->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <button type="submit" class="btn btn-primary text-blue-600 text-sm">Actualizar</button>
+                                </form>
+                            </td>
                             <td class="px-4 py-2">
                                 @if (Auth::id() !== $user->id)
-                                        {{-- <form method="POST" action="{{ route('user.delete', $user->id) }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-500 hover:underline">Eliminar</button>
-                                        </form> --}}
+                                    <form action="{{ route('user.delete') }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" name="id" value="{{ $user->id }}">
+                                        <button type="submit" class="btn btn-danger text-red-600">Eliminar</button>
+                                    </form>
                                 @else
                                     <span class="text-gray-400">No puedes eliminarte</span>
                                 @endif

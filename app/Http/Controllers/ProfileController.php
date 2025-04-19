@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -56,5 +57,31 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function delete(Request $request): RedirectResponse
+    {
+        if (Auth::user()->role->name !== 'admin') {
+            abort(403, 'No autorizado');
+        }
+        $user = User::find($request->id);
+        if ($user) {
+            $user->delete();
+            return redirect()->route('users_admin')->with('success', 'Usuario eliminado correctamente');
+        } else {
+            return redirect()->route('users_admin')->with('error', 'Usuario no encontrado');
+        }
+    }
+
+    public function updateRole(Request $request, User $user): RedirectResponse
+    {
+        $request->validate([
+            'role_id' => ['required', 'exists:roles,id'],
+        ]);
+    
+        $user->role_id = $request->role_id;
+        $user->save();
+    
+        return Redirect::route('users_admin')->with('success', 'Rol actualizado correctamente');
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Models\Post;
+use App\Models\Role;
 use App\Models\User;
 
 Route::get('/', function () {
@@ -23,13 +24,17 @@ Route::get('/users_admin', function () {
         abort(403, 'No autorizado');
     }
     $users = User::all();
-    return view('users_admin', compact('users'));
+    $roles = Role::all();
+    return view('users_admin', compact('users','roles'));
 })->middleware(['auth', 'verified'])->name('users_admin');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::delete('/profile/delete', [ProfileController::class, 'delete'])->name('user.delete');
+    Route::patch('/users/{user}/role', [ProfileController::class, 'updateRole'])->name('user.updateRole');
 });
 
 Route::middleware(['auth'])->group(function () {
