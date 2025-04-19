@@ -7,17 +7,24 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Models\Post;
+use App\Models\User;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/dashboard', function () {
-
     $posts = Post::All();
     return view('dashboard' , compact('posts'));
-
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/users_admin', function () {
+    if (Auth::user()->role->name !== 'admin') {
+        abort(403, 'No autorizado');
+    }
+    $users = User::all();
+    return view('users_admin', compact('users'));
+})->middleware(['auth', 'verified'])->name('users_admin');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
