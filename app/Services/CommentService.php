@@ -3,17 +3,12 @@
 namespace App\Services;
 
 use App\Models\Comment;
-use Illuminate\Support\Facades\Auth;
 
 class CommentService
 {
-    public function create(array $data): Comment
+    public function create(array $data)
     {
-        return Comment::create([
-            'content' => $data['content'],
-            'post_id' => $data['post_id'],
-            'user_id' => Auth::id(),
-        ]);
+        return Comment::create($data);
     }
 
     public function delete(Comment $comment): bool

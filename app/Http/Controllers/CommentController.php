@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Services\CommentService;
 use Illuminate\Http\Request;
 
@@ -12,10 +13,29 @@ class CommentController extends Controller
     {
         $this->commentService = $commentService;
     }
-
     public function store(Request $request)
     {
-        $this->commentService->create($request->all());
+        $user = $request->user();
+
+        if ($user->available_comments < 1) {
+            return redirect()->back()->with('error', 'No tienes comentarios disponibles.');
+        }
+
+        // dd($request->all());
+        $request->validate([
+            'post_id' => 'required|exists:posts,id',
+            'content' => 'required|string|max:1000',
+        ]);
+
+        $this->commentService->create([
+            'user_id' => $user->id,
+            'post_id' => $request->post_id,
+            'content' => $request->content,
+        ]);
+
+        $user->available_comments -= 1;
+        $user->save();
+
         return redirect()->back()->with('success', 'Comentario agregado');
     }
 

@@ -78,10 +78,19 @@ class ProfileController extends Controller
         $request->validate([
             'role_id' => ['required', 'exists:roles,id'],
         ]);
-    
+
         $user->role_id = $request->role_id;
         $user->save();
-    
+
         return Redirect::route('users_admin')->with('success', 'Rol actualizado correctamente');
+    }
+    public static function addHearts(User $user): void
+    {
+        $user->hearts += 10;
+        if ($user->hearts >= 100) {
+            $user->hearts = 0;
+            $user->available_comments += 1;
+        }
+        $user->save();
     }
 }

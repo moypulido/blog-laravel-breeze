@@ -1,31 +1,31 @@
-volumes:
-  mysql_blog_data:
+  volumes:
+    mysql_blog_data:
 
-services:
-  mysql_master:
-    image: mysql:8.0
-    container_name: mysql_blog_data
-    restart: always
-    ports:
-      - "3307:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: blog
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: secret
-    volumes:
-      - mysql_blog_data:/var/lib/mysql
+  services:
+    mysql_master:
+      image: mysql:8.0
+      container_name: mysql_blog_data
+      restart: always
+      ports:
+        - "3307:3306"
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: blog
+        MYSQL_USER: laravel
+        MYSQL_PASSWORD: secret
+      volumes:
+        - mysql_blog_data:/var/lib/mysql
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin_master
-    restart: always
-    environment:
-      PMA_HOST: mysql_master
-      PMA_USER: laravel
-      PMA_PASSWORD: secret
-      UPLOAD_LIMIT: 100M
-    ports:
-      - "8080:80"
-    depends_on:
-      - mysql_master
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      container_name: phpmyadmin_master
+      restart: always
+      environment:
+        PMA_HOST: mysql_master
+        PMA_USER: laravel
+        PMA_PASSWORD: secret
+        UPLOAD_LIMIT: 100M
+      ports:
+        - "8080:80"
+      depends_on:
+        - mysql_master

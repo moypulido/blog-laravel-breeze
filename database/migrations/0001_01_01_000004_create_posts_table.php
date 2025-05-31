@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('title');
+            $table->unsignedInteger('hearts')->default(0);
             $table->text('content');
             $table->timestamps();
         });

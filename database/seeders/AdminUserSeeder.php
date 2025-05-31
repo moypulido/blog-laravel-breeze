@@ -21,5 +21,21 @@ class AdminUserSeeder extends Seeder
                 'role_id' => 1,
             ]
         );
+        User::updateOrCreate(
+            ['email' => 'user1@blog.com'],
+            [
+                'name' => 'User One',
+                'password' => bcrypt('12345678'),
+                'role_id' => 2,
+            ]
+        );
+        User::updateOrCreate(
+            ['email' => 'user2@blog.com'],
+            [
+                'name' => 'User Two',
+                'password' => bcrypt('12345678'),
+                'role_id' => 2,
+            ]
+        );
     }
 }

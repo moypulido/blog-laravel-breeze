@@ -9,8 +9,7 @@ class Post extends Component
 {
     public $post;
     public $comments;
-    public $likesCount;
-    public $userHasLiked;
+    public $HeartCount;
     /**
      * Create a new component instance.
      *
@@ -20,12 +19,7 @@ class Post extends Component
     {
         $this->post = $post;
         $this->comments = $post->comments;
-        $this->likesCount = $post->likes->count();
-        $this->userHasLiked = Auth::check() 
-            ? ($post->likes->where('user_id', Auth::id())->count() > 0
-                ? $post->likes->where('user_id', Auth::id())->count() > 0
-                : false)
-            : false;
+        $this->HeartCount = $post->hearts;
     }
 
     /**
