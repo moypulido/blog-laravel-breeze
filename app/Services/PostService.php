@@ -28,19 +28,21 @@ class PostService
     {
         return Post::all();
     }
-    public function find(int $id): Post|null
+    public function find(int $id): ?Post
     {
-        $post = Post::find($id);
-        return $post;
+        $post = Post::where('id', $id)->first();
+        return $post instanceof Post ? $post : null;
     }
 
-    public function addHeart(int $postId): void
+    public function addHeart(int $postId): Post|null
     {
         $post = Post::find($postId);
-        if ($post) {
+        if ($post instanceof Post) {
             $post->hearts += 10;
             $post->save();
+            return $post;
         }
+        return null;
     }
     public function getUserByPostId(int $postId)
     {

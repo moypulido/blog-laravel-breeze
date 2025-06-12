@@ -5,11 +5,14 @@ namespace App\View\Components;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
+
 class Post extends Component
 {
     public $post;
     public $comments;
     public $HeartCount;
+
+    
     /**
      * Create a new component instance.
      *
@@ -20,6 +23,7 @@ class Post extends Component
         $this->post = $post;
         $this->comments = $post->comments;
         $this->HeartCount = $post->hearts;
+
     }
 
     /**

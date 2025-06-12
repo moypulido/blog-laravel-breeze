@@ -8,13 +8,14 @@ use App\Http\Controllers\CommentController;
 use App\Models\Post;
 use App\Models\Role;
 use App\Models\User;
+use App\Http\Controllers\ShopController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/dashboard', function () {
-    $posts = Post::All();
+    $posts = Post::with(['user.badges', 'comments.user'])->latest()->get();
     return view('dashboard', compact('posts'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -22,8 +23,10 @@ Route::get('/users_admin', function () {
     if (Auth::user()->role->name !== 'admin') {
         abort(403, 'No autorizado');
     }
-    $users = User::all();
+
+    $users = User::with('badges', 'role')->get();
     $roles = Role::all();
+
     return view('users_admin', compact('users', 'roles'));
 })->middleware(['auth', 'verified'])->name('users_admin');
 
@@ -43,6 +46,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/heart/{post}', [PostController::class, 'heart'])->name('heart.add');
 
     Route::post('/posts/comments', [CommentController::class, 'store'])->name('comment.store');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+    Route::post('/shop/buy/{product}', [ShopController::class, 'buy'])->name('shop.buy');
 });
 
 require __DIR__ . '/auth.php';

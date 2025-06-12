@@ -87,10 +87,10 @@ class ProfileController extends Controller
     public static function addHearts(User $user): void
     {
         $user->hearts += 10;
-        if ($user->hearts >= 100) {
-            $user->hearts = 0;
-            $user->available_comments += 1;
-        }
+        // if ($user->hearts >= 100) {
+        //     $user->hearts = 0;
+        //     $user->available_comments += 1;
+        // }
         $user->save();
     }
 }

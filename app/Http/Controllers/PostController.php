@@ -36,6 +36,7 @@ class PostController extends Controller
     public function heart(Request $request, $postId)
     {
         $post = $this->postService->addHeart($postId);
+        // $post = $this->postService->getUserByPostId($postId);
 
         $post_user = $this->postService->getUserByPostId($postId);
         ProfileController::addHearts($post_user);

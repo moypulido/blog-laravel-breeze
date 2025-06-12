@@ -24,7 +24,16 @@
                     @foreach ($users as $user)
                         <tr class="border-t hover:bg-gray-50">
                             <td class="px-4 py-2 text-center align-middle">{{ $user->id }}</td>
-                            <td class="px-4 py-2 text-center align-middle">{{ $user->name }}</td>
+                            <td class="px-4 py-2 text-center align-middle">
+                                {{ $user->name }}
+                                <div class="mt-1 flex flex-col items-center space-y-0.5">
+                                    @foreach ($user->badges as $badge)
+                                        <span class="inline-block bg-yellow-200 text-yellow-800 text-[8px] font-semibold px-1 py-0.5 rounded leading-tight">
+                                            🏅 {{ $badge->name }}
+                                        </span>
+                                    @endforeach
+                                </div>
+                            </td>
                             <td class="px-4 py-2 text-center align-middle">{{ $user->email }}</td>
                             <td class="px-4 py-2 text-center align-middle">{{ $user->hearts ?? 0 }}</td>
                             <td class="px-4 py-2 text-center align-middle">{{ $user->available_comments ?? 0 }}</td>

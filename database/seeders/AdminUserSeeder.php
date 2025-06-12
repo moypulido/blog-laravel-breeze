@@ -19,6 +19,7 @@ class AdminUserSeeder extends Seeder
                 'name' => 'Admin',
                 'password' => bcrypt('password'),
                 'role_id' => 1,
+                'hearts' => 1000, // Optional: Set initial hearts for the admin
             ]
         );
         User::updateOrCreate(

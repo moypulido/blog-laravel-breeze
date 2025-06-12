@@ -16,12 +16,22 @@
             </div>
             
             {{-- Autor --}}
-            <p class="text-xs text-gray-500 mb-3">
-                por <span class="font-semibold text-indigo-600">{{ $post->user->name }}</span>
-            </p>
+            <div class="flex items-center space-x-2 mb-3">
+                {{-- Autor --}}
+                <p class="text-xs text-gray-500">
+                    por <span class="font-semibold text-indigo-600">{{ $post->user->name }}</span>
+                </p>
+                {{-- Insignias del autor --}}
+                @foreach ($post->user->badges as $badge)
+                    <span class="inline-block bg-yellow-200 text-yellow-800 text-[10px] font-semibold px-1 py-0.5 rounded">
+                        🏅 {{ $badge->name }}
+                    </span>
+                @endforeach
+            </div>
+
 
             {{-- Contenido --}}
-            <p class="text-gray-700 mb-5 border-l-4 border-indigo-200 pl-4">
+            <p class="text-gray-700 mb-5 border-l-4 border-indigo-200 pl-4 text-xl leading-relaxed">
                 {{ $post->content }}
             </p>
 
